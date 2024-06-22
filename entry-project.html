@@ -1,0 +1,33 @@
+javascript:<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entry Project</title>
+    <script src="https://playentry.org/entry-js"></script>
+</head>
+<body>
+    <div id="entryCanvas"></div>
+    <script>
+        // 엔트리 초기화 코드
+        Entry.init(document.getElementById('entryCanvas'), {
+            type: 'workspace', // 혹은 'minimize'
+            lib: 'https://playentry.org/entry-js', // 혹은 다른 CDN 경로
+        });
+
+        // 사용자 정의 블록 로드 스크립트 삽입
+        function loadCustomBlocks() {
+            import('https://rawcdn.githack.com/avocad5/EntSave/f17c2a0ee2777326ec6816438638abf7489a3e24/block.js')
+                .then(module => {
+                    module.userDefinedBlocks.forEach(block => {
+                        Entry.block[block.name] = block.definition;
+                    });
+                })
+                .catch(error => console.error('Failed to load custom blocks:', error));
+        }
+
+        // 프로젝트 로드 시 자동으로 블록을 불러오는 함수 실행
+        loadCustomBlocks();
+    </script>
+</body>
+</html>
